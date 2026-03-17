@@ -1,4 +1,6 @@
 import type { product } from "./types.js";
+import type { productNew } from "./types.js";
+import { v4 as uuidv4 } from 'uuid';
 export let items: product[] = [
      {
          id: "12",
@@ -26,5 +28,14 @@ export let items: product[] = [
     },
     async getAllUsersProducts () {
         return items
+    },
+    async addNewProduct (product:productNew) {
+        const newId = uuidv4();
+       const {name, description, price, category, inStock} = product;
+        const newProduct:product = {
+            id:newId, name, description, price, category, inStock
+        }
+        items.push(newProduct)
+        return newProduct;
     }
  }

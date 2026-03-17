@@ -12,6 +12,7 @@ export async function getUserProducts(
 ) {
     const userId = Number(request.params.userId);
     const products = await productService.getByUserId(userId);
+    if (!products) return reply.status(404).send({ error: "Not found" });
   return products;
 }
 
