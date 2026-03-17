@@ -23,5 +23,8 @@ export let items: product[] = [
  export const productService = {
     async getByUserId (userId:number) {
        return items.find((user) => Number(user.id) === userId)
+    },
+    async getAllUsersProducts () {
+        return items
     }
  }

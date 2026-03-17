@@ -10,9 +10,12 @@ export async function getUserProducts(
   request: FastifyRequest<GetUserProductsParams>,
   reply: FastifyReply
 ) {
-  const userId = Number(request.params.userId);
-
-  const products = await productService.getByUserId(userId);
-
+    const userId = Number(request.params.userId);
+    const products = await productService.getByUserId(userId);
   return products;
+}
+
+export async function getAllProducts() {
+  const products = await productService.getAllUsersProducts()
+  return products
 }
