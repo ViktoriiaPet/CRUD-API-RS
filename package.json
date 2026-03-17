@@ -23,6 +23,7 @@
     "fastify": "^5.8.2"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "nodemon": "^3.1.14",
     "tsx": "^4.21.0"
   }
