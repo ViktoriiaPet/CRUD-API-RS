@@ -15,7 +15,7 @@ if (isNaN(PORT)) {
 const fastify = Fastify({
   logger: true
 })
-await fastify.register(productRoutes);
+await fastify.register(productRoutes, { prefix: '/api' });
 
 
 
