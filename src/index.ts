@@ -4,6 +4,7 @@ import { items } from "./servise.js";
 import { getAllProducts } from "./controller.js";
 import dotenv from "dotenv";
 import { createProduct } from "./controller.js";
+import { productRoutes } from "./routes/productsRouts.js";
 
 dotenv.config();
 const PORT = Number(process.env.PORT);
@@ -14,11 +15,10 @@ if (isNaN(PORT)) {
 const fastify = Fastify({
   logger: true
 })
+await fastify.register(productRoutes);
 
-fastify.get('/api/products/', getAllProducts);
-fastify.post('/api/products/', createProduct)
 
-fastify.get<{Params: { userId: string }}> ('/api/products/:userId', getUserProducts)
+
 try {
   await fastify.listen({ port: PORT })
 } catch (err) {
