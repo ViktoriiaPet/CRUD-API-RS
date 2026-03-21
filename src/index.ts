@@ -17,7 +17,11 @@ const fastify = Fastify({
 })
 await fastify.register(productRoutes, { prefix: '/api' });
 
-
+fastify.setNotFoundHandler((request, reply) => {
+  reply.status(404).send({
+    error: 'Route not found'
+  });
+});
 
 try {
   await fastify.listen({ port: PORT })
