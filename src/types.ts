@@ -14,3 +14,8 @@ export type productNew = {
     category: string;
     inStock: boolean
 }
+
+export type UpdateProductParams = {
+  Params: { productId: string };
+  Body: Partial<productNew>;
+};

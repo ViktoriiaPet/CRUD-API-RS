@@ -3,6 +3,9 @@ import type { productNew } from '../types.js';
 import { createProduct } from '../controller.js';
 import { getAllProducts } from '../controller.js';
 import { getUserProducts } from '../controller.js';
+import { updateProductById } from '../controller.js';
+import type { UpdateProductParams } from '../types.js';
+import { deleteProductById } from '../controller.js';
 
 export async function productRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: productNew }>('/products', {
@@ -41,6 +44,8 @@ export async function productRoutes(fastify: FastifyInstance) {
     fastify.get('/products', async (request, reply) => {
     return { products: await getAllProducts() };
   });
-  fastify.get<{Params: { userId: string }}> ('/products/:userId', getUserProducts)
-  
+  fastify.get<{Params: { productId: string }}> ('/products/:productId', getUserProducts)
+  fastify.put<UpdateProductParams>('/products/:productId', updateProductById)
+  fastify.delete<{
+  Params: { productId: string };}>('/products/:productId', deleteProductById);
 }
