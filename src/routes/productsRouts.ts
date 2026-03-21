@@ -19,10 +19,20 @@ export async function productRoutes(fastify: FastifyInstance) {
         },
       },
       response: {
-        200: {
+        201: {
           type: 'object',
           properties: {
-            productAdded: { $ref: 'product#' },
+            productAdded:         {type: 'object',
+        required: ['id', 'name', 'description', 'price', 'category', 'inStock'],
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          description: { type: 'string' },
+          price: { type: 'number' },
+          category: { type: 'string' },
+          inStock: { type: 'boolean' },
+        },
+      },
           },
         },
       },
@@ -31,6 +41,6 @@ export async function productRoutes(fastify: FastifyInstance) {
     fastify.get('/products', async (request, reply) => {
     return { products: getAllProducts() };
   });
-  fastify.get<{Params: { userId: string }}> ('/api/products/:userId', getUserProducts)
+  fastify.get<{Params: { userId: string }}> ('/products/:userId', getUserProducts)
   
 }
