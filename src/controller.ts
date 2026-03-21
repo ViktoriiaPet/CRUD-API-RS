@@ -1,6 +1,8 @@
 import type { FastifyReply } from "fastify";
 import type { FastifyRequest } from "fastify";
 import { productService } from "./servise.js";
+import type { productNew } from "./types.js";
+
 
 type GetUserProductsParams = {
   Params: { userId: string }
@@ -19,4 +21,12 @@ export async function getUserProducts(
 export async function getAllProducts() {
   const products = await productService.getAllUsersProducts()
   return products
+}
+
+export async function createProduct(
+  request: FastifyRequest<{ Body: productNew }>,
+) {
+  console.log('request:',request.body)
+  const productAdded =  await productService.addNewProduct(request.body)
+  return productAdded
 }

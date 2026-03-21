@@ -3,6 +3,7 @@ import { getUserProducts } from "./controller.js";
 import { items } from "./servise.js";
 import { getAllProducts } from "./controller.js";
 import dotenv from "dotenv";
+import { createProduct } from "./controller.js";
 
 dotenv.config();
 const PORT = Number(process.env.PORT);
@@ -15,6 +16,7 @@ const fastify = Fastify({
 })
 
 fastify.get('/api/products/', getAllProducts);
+fastify.post('/api/products/', createProduct)
 
 fastify.get<{Params: { userId: string }}> ('/api/products/:userId', getUserProducts)
 try {
