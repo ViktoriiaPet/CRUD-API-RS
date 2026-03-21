@@ -23,6 +23,14 @@ fastify.setNotFoundHandler((request, reply) => {
   });
 });
 
+fastify.setErrorHandler((error, request, reply) => {
+  fastify.log.error(error);
+  reply.status(500).send({
+    error: 'Internal Server Error',
+    message: 'Something went wrong on the server. Please try again later.'
+  });
+});
+
 try {
   await fastify.listen({ port: PORT })
 } catch (err) {
