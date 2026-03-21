@@ -39,7 +39,7 @@ export async function productRoutes(fastify: FastifyInstance) {
     },
   }, createProduct);
     fastify.get('/products', async (request, reply) => {
-    return { products: getAllProducts() };
+    return { products: await getAllProducts() };
   });
   fastify.get<{Params: { userId: string }}> ('/products/:userId', getUserProducts)
   

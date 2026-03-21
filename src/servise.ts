@@ -30,7 +30,6 @@ export let items: product[] = [
         return items
     },
     async addNewProduct (product:productNew) {
-        console.log(product)
         const newId = randomUUID();
        const {name, description, price, category, inStock} = product;
         const newProduct: product = {
