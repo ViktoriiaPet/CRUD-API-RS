@@ -14,6 +14,9 @@ export async function getUserProducts(
 ) {
     const userId = request.params.productId;
     const products = await productService.getByUserId(userId);
+    if (!isUuid(userId)) {
+    return reply.status(400).send({ error: 'Invalid productId' });
+  }
     if (!products) return reply.status(404).send({ error: "Not found" });
   return products;
 }
