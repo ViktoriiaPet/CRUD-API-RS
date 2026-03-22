@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start:prod": "npm run build && node dist/index.js",
+    "start:multi": "cross-env MODE=multi tsx src/index.ts",
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -16,5 +21,18 @@
   "bugs": {
     "url": "https://github.com/ViktoriiaPet/CRUD-API-RS/issues"
   },
-  "homepage": "https://github.com/ViktoriiaPet/CRUD-API-RS#readme"
+  "homepage": "https://github.com/ViktoriiaPet/CRUD-API-RS#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "fastify": "^5.8.2",
+    "uuid": "^13.0.0",
+    "vitest": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
 }
