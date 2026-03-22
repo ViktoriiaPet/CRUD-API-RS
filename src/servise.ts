@@ -2,32 +2,21 @@ import type { product } from "./types.js";
 import type { productNew } from "./types.js";
 import { randomUUID } from "node:crypto";
 import type { UpdateProductParams } from "./types.js";
-export let items: product[] = [
-     {
-         id: "3fecbeeb-9d8e-4605-958d-bbcfef450d90",
-         "name": "Alice",
-         "description":"",
-         "price": 1200,
-         "category": "food",
-         "inStock": true
-     },
-     {
-         "id": "3fecbeeb-9d8e-4605-958d-bbcfef450d80",
-         "name": "Gumbert",
-         "description":"",
-         "price": 1200,
-         "category": "food",
-         "inStock": true
-     }
- ];
+ let items: product[] = [];
 
 
  
  export const productService = {
     async getByUserId (userId:string) {
-       return items.find((user) => (user.id) === userId)
-    },
+    if (process.send) {
+      return sendToMaster('GET_ONE', { id: userId });
+    }
+    return items.find((user) => user.id === userId);
+  },
     async getAllUsersProducts () {
+        if (process.send) {
+      return sendToMaster('GET_ALL');
+    }
         return items
     },
     async addNewProduct (product:productNew) {
@@ -36,10 +25,16 @@ export let items: product[] = [
         const newProduct: product = {
             id:newId, name, description, price, category, inStock
         }
+        if (process.send) {
+        return sendToMaster('CREATE', newProduct);
+    }
         items.push(newProduct)
         return newProduct;
     },
     async updateProduct(product: Partial<productNew>, id: string){
+      if (process.send) {
+      return sendToMaster('UPDATE', { id, data: product });
+    }
         const productForUpdate = items.find(item => item.id === id);
 
           if (!productForUpdate) {
@@ -49,6 +44,9 @@ export let items: product[] = [
          return productForUpdate;
     },
     async deleteProduct(id: string) {
+        if (process.send) {
+      return sendToMaster('DELETE', { id });
+    }
     const index = items.findIndex(item => item.id === id);
     if (index === -1) {
     return false;
@@ -57,3 +55,21 @@ export let items: product[] = [
     return true;
 }
  }
+ function sendToMaster(type: string, payload?: any) {
+  return new Promise((resolve, reject) => {
+    const requestId = crypto.randomUUID();
+
+    const listener = (msg: any) => {
+      if (msg.requestId === requestId) {
+        process.off('message', listener);
+
+        if (msg.error) reject(msg.error);
+        else resolve(msg.result);
+      }
+    };
+
+    process.on('message', listener);
+
+    process.send?.({ type, payload, requestId });
+  });
+}
